@@ -1,27 +1,21 @@
-// DEPENDENCIES
-const express = require("express");
-const path = require("path");
-require("dotenv").config();
-const PORT = process.env.PORT
-const landingRoutes = require("./routes/index.js");
+import express from "express";
+import path from "path";
 
-// MIDDLEWARE - COMMUNICATION BETWEEN ENDPOINTS BETWEEN REQUEST AND RESPONSE
-// app.use(express.json());
-app.use("/", landingRoutes);
+const app = express();
+const port = 3000;
 
+const publicDirectory = path.join(import.meta.dirname, "public");
 
-// ROUTES
-app.get("/home", (req, res) => {
-  res.send("This is my home page");
-})
 app.get("/", (req, res) => {
-  res.send("This is my home page");
-})
-app.get("/contact", (req, res) => {
-  res.send("This is my contact page");
-})
+  res.sendFile(path.join(publicDirectory, "index.html"));
+});
 
-// PORT
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(publicDirectory, "contact.html"));
+});
+
+app.use(express.static(publicDirectory));
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
